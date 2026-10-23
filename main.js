@@ -1,22 +1,37 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, screen } = require("electron");
 const path = require("path");
+const fs = require("fs");
 
 let splashWindow = null;
 let mainWindow = null;
 
 function createSplash() {
   splashWindow = new BrowserWindow({
-    width: 500,
-    height: 300,
+    width: 600,
+    height: 424,
     frame: false,
     transparent: true,
-    resizable: false,
     alwaysOnTop: true,
+    resizable: false,
+    movable: false,
+    skipTaskbar: true,
     center: true,
-    show: false,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false
+    }
   });
+
   splashWindow.loadFile(path.join(__dirname, "renderer", "splash.html"));
-  splashWindow.once("ready-to-show", () => splashWindow.show());
+
+  setTimeout(() => {
+    createMainWindow();
+    mainWindow.show();
+    if (splashWindow) {
+      splashWindow.close();
+      splashWindow = null;
+    }
+  }, 3000);
 }
 
 function createMainWindow() {
@@ -36,22 +51,11 @@ function createMainWindow() {
   });
   mainWindow.loadFile(path.join(__dirname, "renderer", "index.html"));
 
-  return new Promise((resolve) => mainWindow.once("ready-to-show", resolve));
+
 }
 
-app.whenReady().then(async () => {
+app.whenReady().then(() => {
   createSplash();
-
-  const minSplashTime = new Promise((resolve) => setTimeout(resolve, 2500));
-  const mainReady = createMainWindow();
-
-  await Promise.all([minSplashTime, mainReady]);
-
-  mainWindow.show();
-  if (splashWindow) {
-    splashWindow.close();
-    splashWindow = null;
-  }
 });
 
 app.on("window-all-closed", () => {
