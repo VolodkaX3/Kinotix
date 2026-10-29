@@ -27,6 +27,7 @@ function createSplash() {
 
   setTimeout(() => {
     createMainWindow();
+    //mainWindow.maximize();
     mainWindow.show();
     if (splashWindow) {
       splashWindow.close();
@@ -37,13 +38,15 @@ function createSplash() {
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
+    fullscreen: true,
     width: 1280,
-    height: 800,
+    height: 905,
     minWidth: 900,
     minHeight: 600,
     show: false,
     backgroundColor: "#0b0b12",
     title: "Kinotix",
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -52,6 +55,11 @@ function createMainWindow() {
   });
   mainWindow.loadFile(path.join(__dirname, "renderer", "index.html"));
 
+  mainWindow.webContents.on("before-input-event", (event, input) => {
+    if (input.type === "keyDown" && input.key === "Escape") {
+      mainWindow.close();
+    }
+  });
 
 }
 

@@ -1,6 +1,62 @@
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
-  background: #0b0b12;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0b0b12 url("imgr/MainscreenR.png") center / cover no-repeat;
   color: #ffffff;
   font-family: system-ui, sans-serif;
+}
+
+.close_menu {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+#btn_close {
+  color: #380000;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: url("imgr/ButtonC.png") center / contain no-repeat;
+  padding-top: 4px;
+  transition: filter 0.2s, transform 0.2s;
+}
+
+#btn_collapse {
+  color: #380000;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: url("imgr/ButtonC.png") center / contain no-repeat;
+  padding-top: 6px;
+  transition: filter 0.2s, transform 0.2s;
+}
+
+#btn_close:hover,
+#btn_collapse:hover {
+  filter: brightness(1.1);
+  transform: scale(1.08);
+  cursor: pointer;
+  color: #2f0000;              
+}
+
+#btn_close:active,
+#btn_collapse:active {
+  transform: scale(0.95);
+}
+
+#btn_close svg,
+#btn_collapse svg {
+  width: 28px;
+  height: 28px;
+  stroke-width: 3;
 }
